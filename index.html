@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
     <meta
       name="description"
       content="Ivan Turanin — frontend developer with 6+ years of experience. TypeScript, React, Vue, Node.js. CV, experience, skills, and contacts."
@@ -37,11 +37,24 @@
     />
     <meta name="twitter:image" content="https://turanozaur.github.io/images/ivan-turanin-og.jpg?v=2" />
 
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" />
 
     <link rel="me" href="https://github.com/Turanozaur" />
 
+    <style>
+      :root {
+        --color-bg: #ffffff;
+        color-scheme: light;
+      }
+      :root[data-theme='dark'] {
+        --color-bg: #0f0f0f;
+        color-scheme: dark;
+      }
+      html,
+      body {
+        background-color: var(--color-bg);
+      }
+    </style>
     <script>
       ;(function () {
         try {
@@ -62,20 +75,23 @@
           if (location.hash) {
             history.replaceState(null, '', location.pathname + location.search)
           }
+          var surfaceColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--color-bg')
+            .trim()
+          var themeColorMeta = document.querySelector('meta[name="theme-color"]')
+          if (themeColorMeta && surfaceColor) {
+            themeColorMeta.content = surfaceColor
+          }
+          var colorSchemeMeta = document.querySelector('meta[name="color-scheme"]')
+          if (colorSchemeMeta) {
+            colorSchemeMeta.content = document.documentElement.getAttribute('data-theme')
+          }
           document.documentElement.style.scrollBehavior = 'auto'
-          scrollTo(0, 0)
+          window.scrollTo(0, 0)
+          document.documentElement.style.removeProperty('scroll-behavior')
         } catch (e) {}
       })()
     </script>
-    <style>
-      html {
-        color-scheme: light dark;
-        background-color: #ffffff;
-      }
-      html[data-theme='dark'] {
-        background-color: #0f0f0f;
-      }
-    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

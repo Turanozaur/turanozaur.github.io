@@ -4,10 +4,6 @@ import App from './App.jsx'
 import { LanguageProvider } from './i18n/LanguageContext.jsx'
 import { ThemeProvider } from './theme/ThemeContext.jsx'
 import './index.css'
-import { resetPageScrollOnLoad, stripHashFromUrl } from './shared/lib/scroll.js'
-
-stripHashFromUrl()
-resetPageScrollOnLoad()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
