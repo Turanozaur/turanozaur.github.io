@@ -15,16 +15,16 @@ export function useActiveSection() {
         return
       }
 
-      const atBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8
-
-      if (atBottom) {
+      const contact = document.getElementById('contact')
+      if (contact && contact.getBoundingClientRect().top < window.innerHeight) {
         setActiveSection('contact')
         return
       }
 
       let current = ''
       for (const id of SECTION_IDS) {
+        if (id === 'contact') continue
+
         const section = document.getElementById(id)
         if (section && section.getBoundingClientRect().top <= offset + 24) {
           current = id

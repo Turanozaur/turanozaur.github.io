@@ -1,14 +1,13 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useActiveSection } from '../hooks/useActiveSection.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
-import { navigateToSection, scrollToPageY } from '../shared/lib/scroll.js'
+import { navigateToSection, scrollToPageY, stripHashFromUrl } from '../shared/lib/scroll.js'
 import { ThemeToggle } from './ThemeToggle.jsx'
 
 const DESKTOP_NAV_QUERY = '(min-width: 64rem)'
 
 export function Header() {
   const { t, lang, setLang } = useLanguage()
-  const pendingScrollRef = useRef(null)
   const menuOpenRef = useRef(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useActiveSection()
@@ -19,27 +18,11 @@ export function Header() {
 
   const runScroll = (scroll) => {
     if (menuOpen) {
-      pendingScrollRef.current = scroll
       closeMenu()
-      return
     }
 
     scroll()
   }
-
-  useLayoutEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-
-    if (!menuOpen && pendingScrollRef.current) {
-      const scroll = pendingScrollRef.current
-      pendingScrollRef.current = null
-      scroll()
-    }
-
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [menuOpen])
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -69,7 +52,7 @@ export function Header() {
 
     runScroll(() => {
       navigateToSection(sectionId)
-      window.history.pushState(null, '', `#${sectionId}`)
+      stripHashFromUrl()
     })
   }
 
@@ -79,7 +62,7 @@ export function Header() {
 
     runScroll(() => {
       scrollToPageY(0)
-      window.history.pushState(null, '', window.location.pathname)
+      stripHashFromUrl()
     })
   }
 
@@ -108,28 +91,28 @@ export function Header() {
 
         <nav id="site-nav" className="nav" aria-label={t.nav.ariaLabel}>
           <a
-            href="#about"
+            href="#"
             {...navLinkProps('about')}
             onClick={(event) => scrollToSection(event, 'about')}
           >
             {t.nav.about}
           </a>
           <a
-            href="#experience"
+            href="#"
             {...navLinkProps('experience')}
             onClick={(event) => scrollToSection(event, 'experience')}
           >
             {t.nav.experience}
           </a>
           <a
-            href="#skills"
+            href="#"
             {...navLinkProps('skills')}
             onClick={(event) => scrollToSection(event, 'skills')}
           >
             {t.nav.skills}
           </a>
           <a
-            href="#contact"
+            href="#"
             {...navLinkProps('contact')}
             onClick={(event) => scrollToSection(event, 'contact')}
           >

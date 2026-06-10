@@ -36,3 +36,16 @@ export function navigateToSection(sectionId) {
   const section = document.getElementById(sectionId)
   if (section) scrollToSectionStart(section)
 }
+
+export function stripHashFromUrl() {
+  window.history.replaceState(null, '', window.location.pathname + window.location.search)
+}
+
+export function resetPageScrollOnLoad() {
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual'
+  }
+
+  document.documentElement.style.scrollBehavior = 'auto'
+  window.scrollTo(0, 0)
+}

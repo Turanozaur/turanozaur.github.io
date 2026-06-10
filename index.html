@@ -56,6 +56,14 @@
           if (lang === 'en' || lang === 'ru') {
             document.documentElement.lang = lang
           }
+          if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual'
+          }
+          if (location.hash) {
+            history.replaceState(null, '', location.pathname + location.search)
+          }
+          document.documentElement.style.scrollBehavior = 'auto'
+          scrollTo(0, 0)
         } catch (e) {}
       })()
     </script>
