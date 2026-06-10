@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="IT">
+  <rect width="32" height="32" rx="7" fill="#111111" />
+  <text
+    y="23"
+    fill="#ffffff"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="20"
+    font-weight="400"
+  >
+    <tspan x="12.5" text-anchor="middle">I</tspan>
+    <tspan x="19.5" text-anchor="middle">T</tspan>
+  </text>
+</svg>
