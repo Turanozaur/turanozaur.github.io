@@ -1,13 +1,10 @@
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 
-export function About({ revealed = false }) {
+export function About() {
   const { t } = useLanguage()
 
   return (
-    <section
-      id="about"
-      className={`section section--about${revealed ? ' is-revealed' : ''}`}
-    >
+    <section id="about" className="section section--about">
       <div className="container">
         <h2 className="section__title section__title--soft">{t.about.title}</h2>
         <div className="about-card">

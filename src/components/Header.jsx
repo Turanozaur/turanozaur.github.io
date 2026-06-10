@@ -1,29 +1,55 @@
-import { useEffect, useRef, useState } from 'react'
-import { useHeaderMetrics } from '../hooks/useHeaderMetrics.js'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useActiveSection } from '../hooks/useActiveSection.js'
 import { useLanguage } from '../i18n/LanguageContext.jsx'
-import { getScrollGapPx, scrollToPageY } from '../shared/lib/scroll.js'
+import { navigateToSection, scrollToPageY } from '../shared/lib/scroll.js'
 import { ThemeToggle } from './ThemeToggle.jsx'
 
-export function Header({ onAboutClick }) {
-  const { t, lang, setLang } = useLanguage()
-  const headerRef = useRef(null)
-  const [menuOpen, setMenuOpen] = useState(false)
+const DESKTOP_NAV_QUERY = '(min-width: 64rem)'
 
-  useHeaderMetrics(headerRef)
+export function Header() {
+  const { t, lang, setLang } = useLanguage()
+  const pendingScrollRef = useRef(null)
+  const menuOpenRef = useRef(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useActiveSection()
+
+  menuOpenRef.current = menuOpen
 
   const closeMenu = () => setMenuOpen(false)
 
-  useEffect(() => {
+  const runScroll = (scroll) => {
+    if (menuOpen) {
+      pendingScrollRef.current = scroll
+      closeMenu()
+      return
+    }
+
+    scroll()
+  }
+
+  useLayoutEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
 
+    if (!menuOpen && pendingScrollRef.current) {
+      const scroll = pendingScrollRef.current
+      pendingScrollRef.current = null
+      scroll()
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && menuOpenRef.current) {
         closeMenu()
       }
     }
 
     const handleResize = () => {
-      if (window.innerWidth > 767) {
+      if (window.matchMedia(DESKTOP_NAV_QUERY).matches) {
         closeMenu()
       }
     }
@@ -32,36 +58,35 @@ export function Header({ onAboutClick }) {
     window.addEventListener('resize', handleResize)
 
     return () => {
-      document.body.style.overflow = ''
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('resize', handleResize)
     }
-  }, [menuOpen])
+  }, [])
 
-  const scrollToSection = (event, sectionId, { revealAbout = false } = {}) => {
+  const scrollToSection = (event, sectionId) => {
     event.preventDefault()
+    setActiveSection(sectionId)
 
-    if (revealAbout) {
-      onAboutClick?.()
-    }
-
-    const section = document.getElementById(sectionId)
-    const header = headerRef.current
-    if (!section || !header) return
-
-    const top =
-      section.getBoundingClientRect().top + window.scrollY - header.offsetHeight - getScrollGapPx()
-    scrollToPageY(top)
-    window.history.pushState(null, '', `#${sectionId}`)
-    closeMenu()
+    runScroll(() => {
+      navigateToSection(sectionId)
+      window.history.pushState(null, '', `#${sectionId}`)
+    })
   }
 
   const scrollToTop = (event) => {
     event.preventDefault()
-    scrollToPageY(0)
-    window.history.pushState(null, '', window.location.pathname)
-    closeMenu()
+    setActiveSection('')
+
+    runScroll(() => {
+      scrollToPageY(0)
+      window.history.pushState(null, '', window.location.pathname)
+    })
   }
+
+  const navLinkProps = (sectionId) => ({
+    className: activeSection === sectionId ? 'is-active' : undefined,
+    'aria-current': activeSection === sectionId ? 'page' : undefined,
+  })
 
   const handleLangChange = (nextLang) => {
     setLang(nextLang)
@@ -69,26 +94,45 @@ export function Header({ onAboutClick }) {
   }
 
   return (
-    <header ref={headerRef} className={`header${menuOpen ? ' is-menu-open' : ''}`}>
+    <header className={`header${menuOpen ? ' is-menu-open' : ''}`}>
       <div className="container header__inner">
-        <a href="#" className="logo" onClick={scrollToTop}>
+        <a
+          href="#"
+          className="logo"
+          aria-label={t.nav.homeLabel}
+          title={t.nav.homeLabel}
+          onClick={scrollToTop}
+        >
           {t.meta.name}
         </a>
 
         <nav id="site-nav" className="nav" aria-label={t.nav.ariaLabel}>
           <a
             href="#about"
-            onClick={(event) => scrollToSection(event, 'about', { revealAbout: true })}
+            {...navLinkProps('about')}
+            onClick={(event) => scrollToSection(event, 'about')}
           >
             {t.nav.about}
           </a>
-          <a href="#experience" onClick={(event) => scrollToSection(event, 'experience')}>
+          <a
+            href="#experience"
+            {...navLinkProps('experience')}
+            onClick={(event) => scrollToSection(event, 'experience')}
+          >
             {t.nav.experience}
           </a>
-          <a href="#skills" onClick={(event) => scrollToSection(event, 'skills')}>
+          <a
+            href="#skills"
+            {...navLinkProps('skills')}
+            onClick={(event) => scrollToSection(event, 'skills')}
+          >
             {t.nav.skills}
           </a>
-          <a href="#contact" onClick={(event) => scrollToSection(event, 'contact')}>
+          <a
+            href="#contact"
+            {...navLinkProps('contact')}
+            onClick={(event) => scrollToSection(event, 'contact')}
+          >
             {t.nav.contact}
           </a>
         </nav>

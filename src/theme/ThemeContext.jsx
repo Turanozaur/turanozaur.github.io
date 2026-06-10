@@ -1,21 +1,20 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import {
-  applyThemePreference,
-  getResolvedTheme,
+  applyTheme,
   getStoredThemePreference,
-  persistThemePreference,
+  resolveTheme,
+  saveThemePreference,
 } from './theme.js'
 
 const ThemeContext = createContext(null)
 
 export function ThemeProvider({ children }) {
   const [preference, setPreference] = useState(getStoredThemePreference)
-  const [resolvedTheme, setResolvedTheme] = useState(() => getResolvedTheme(getStoredThemePreference()))
+  const [resolvedTheme, setResolvedTheme] = useState(() => resolveTheme(getStoredThemePreference()))
 
   useEffect(() => {
-    applyThemePreference(preference)
-    persistThemePreference(preference)
-    setResolvedTheme(getResolvedTheme(preference))
+    setResolvedTheme(applyTheme(preference))
+    saveThemePreference(preference)
   }, [preference])
 
   useEffect(() => {
@@ -26,8 +25,7 @@ export function ThemeProvider({ children }) {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
 
     const handleChange = () => {
-      applyThemePreference(null)
-      setResolvedTheme(getResolvedTheme(null))
+      setResolvedTheme(applyTheme(null))
     }
 
     media.addEventListener('change', handleChange)

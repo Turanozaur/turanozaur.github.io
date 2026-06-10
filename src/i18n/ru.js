@@ -4,6 +4,7 @@ export const ru = {
   },
   nav: {
     ariaLabel: 'Основная навигация',
+    homeLabel: 'На главную',
     langLabel: 'Язык',
     menuOpen: 'Открыть меню',
     menuClose: 'Закрыть меню',

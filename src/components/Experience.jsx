@@ -1,5 +1,25 @@
 import { useLanguage } from '../i18n/LanguageContext.jsx'
 
+function CardDescription({ text, website }) {
+  if (!text) return null
+
+  if (!website) {
+    return <p className="card__text">{text}</p>
+  }
+
+  const [before, after] = text.split('{link}')
+
+  return (
+    <p className="card__text">
+      {before}
+      <a className="card__link" href={website.href} target="_blank" rel="noreferrer">
+        {website.label}
+      </a>
+      {after}
+    </p>
+  )
+}
+
 export function Experience() {
   const { t } = useLanguage()
 
@@ -17,27 +37,7 @@ export function Experience() {
                 </div>
                 <span className="card__period">{item.period}</span>
               </div>
-              {item.description && (
-                <p className="card__text">
-                  {item.website
-                    ? item.description.split('{link}').map((part, index, parts) => (
-                        <span key={`${item.company}-desc-${index}`}>
-                          {part}
-                          {index < parts.length - 1 && (
-                            <a
-                              className="card__link"
-                              href={item.website.href}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {item.website.label}
-                            </a>
-                          )}
-                        </span>
-                      ))
-                    : item.description}
-                </p>
-              )}
+              <CardDescription text={item.description} website={item.website} />
               {item.bullets && (
                 <ul className="card__bullets">
                   {item.bullets.map((bullet, index) => (

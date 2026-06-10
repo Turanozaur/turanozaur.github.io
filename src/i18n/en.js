@@ -4,6 +4,7 @@ export const en = {
   },
   nav: {
     ariaLabel: 'Main navigation',
+    homeLabel: 'Back to top',
     langLabel: 'Language',
     menuOpen: 'Open menu',
     menuClose: 'Close menu',
