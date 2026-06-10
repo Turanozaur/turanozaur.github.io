@@ -104,6 +104,10 @@ html {
   scroll-padding-top: var(--scroll-offset);
   background-color: var(--color-bg);
   overflow-x: hidden;
+}
+
+html.is-scrolled,
+html.is-scrolled body {
   overscroll-behavior: none;
 }
 
@@ -114,7 +118,6 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
-  overscroll-behavior: none;
 }
 
 .app,
