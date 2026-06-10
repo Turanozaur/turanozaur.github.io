@@ -15,7 +15,7 @@ export function About({ revealed = false }) {
             <p className="about-card__text">{t.about.text}</p>
             <figure className="about-card__photo">
               <img
-                src={`${import.meta.env.BASE_URL}images/IvanTuranin.png`}
+                src={`${import.meta.env.BASE_URL}images/ivan-turanin.png`}
                 alt={t.about.photoAlt}
                 width={853}
                 height={1280}
