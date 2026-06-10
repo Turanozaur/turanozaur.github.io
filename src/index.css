@@ -706,8 +706,8 @@ button {
     justify-content: flex-end;
   }
 
-  .footer__social > li:last-child .footer__social-link {
-    padding-right: 0;
+  .footer__social > li:last-child {
+    margin-right: calc((var(--size-touch) - 1.75rem) / -2);
   }
 
   .footer__email-row {
@@ -799,25 +799,37 @@ button {
   gap: var(--space-5);
   margin: 0;
   padding: 0;
+  overflow: visible;
 }
 
 .footer__social-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-sizing: content-box;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: calc((var(--size-touch) - 1.75rem) / 2);
-  border-radius: var(--radius-pill);
-  transition:
-    background var(--transition-fast),
-    transform var(--transition-fast);
+  box-sizing: border-box;
+  width: var(--size-touch);
+  height: var(--size-touch);
+  padding: 0;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+
+.footer__social-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: transparent;
+  transition: background var(--transition-fast);
 }
 
 .footer__social-link:hover {
-  background: var(--color-footer-social-hover);
   transform: scale(1.08);
+}
+
+.footer__social-link:hover::before {
+  background: var(--color-footer-social-hover);
 }
 
 .footer__social-link:hover .footer__social-icon {
@@ -825,6 +837,8 @@ button {
 }
 
 .footer__social-icon {
+  position: relative;
+  z-index: 1;
   width: 1.75rem;
   height: 1.75rem;
   object-fit: contain;
