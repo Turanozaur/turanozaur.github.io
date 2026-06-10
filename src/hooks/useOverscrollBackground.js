@@ -20,13 +20,18 @@ export function syncOverscrollBackground() {
   const scrollY = window.scrollY
   const viewportHeight = window.innerHeight
   const docHeight = root.scrollHeight
+  const pageBg = readCssVar('--color-bg')
+  const footerBg = readCssVar('--color-footer-bg')
 
   if (isAtTop(scrollY)) {
-    root.style.backgroundColor = readCssVar('--color-bg')
+    root.style.backgroundColor = pageBg
+    document.body.style.backgroundColor = pageBg
   } else if (isAtBottom(scrollY, viewportHeight, docHeight)) {
-    root.style.backgroundColor = readCssVar('--color-footer-bg')
+    root.style.backgroundColor = footerBg
+    document.body.style.backgroundColor = footerBg
   } else {
     root.style.removeProperty('background-color')
+    document.body.style.removeProperty('background-color')
   }
 }
 
@@ -69,6 +74,7 @@ export function useOverscrollBackground() {
       window.removeEventListener('wheel', handleWheel)
       window.removeEventListener('touchmove', handleTouchMove)
       document.documentElement.style.removeProperty('background-color')
+      document.body.style.removeProperty('background-color')
     }
   }, [])
 
