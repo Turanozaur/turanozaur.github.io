@@ -1079,6 +1079,10 @@ button {
     letter-spacing: -0.03em;
   }
 
+  .app[lang='ru'] .hero__title {
+    max-width: 18ch;
+  }
+
   .section__title {
     margin-bottom: var(--space-5);
   }
@@ -1126,6 +1130,17 @@ button {
   .btn--download {
     width: 100%;
     max-width: 20rem;
+  }
+}
+
+.app[lang='ru'] .hero__title {
+  overflow-wrap: normal;
+  hyphens: manual;
+}
+
+@media (min-width: 48rem) {
+  .app[lang='ru'] .hero__title {
+    max-width: 22ch;
   }
 }
 
@@ -1194,6 +1209,10 @@ button {
     --gutter: var(--space-4);
     --section-gap: 2.25rem;
     --radius-sm: 0.875rem;
+  }
+
+  .app[lang='ru'] .hero__title {
+    font-size: clamp(1.625rem, 0.875rem + 3.25vw, 1.875rem);
   }
 
   .hero .eyebrow {

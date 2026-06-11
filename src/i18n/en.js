@@ -31,7 +31,7 @@ export const en = {
       { t: 'I build reliable digital products, ', m: true },
       { t: 'designing and shipping web ', m: true },
       { t: 'applications ', m: false },
-      { t: 'with a focus on clarity, ', m: true },
+      { t: 'with a\u00A0focus on clarity, ', m: true },
       { t: 'performance ', m: false },
       { t: 'and ', m: true },
       { t: 'maintainable code', m: false },
