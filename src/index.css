@@ -1152,26 +1152,48 @@ button {
   .about-card__inner {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-    gap: var(--space-6);
+    gap: 0;
   }
 
   .about-card__text {
     grid-column: 1;
     grid-row: 1;
+    position: relative;
+    z-index: 1;
+    margin-bottom: calc(-1 * var(--space-8));
   }
 
   .about-card__photo {
     grid-column: 1;
     grid-row: 2;
-    aspect-ratio: 1;
+    aspect-ratio: 3 / 4;
     width: 100%;
     max-width: 100%;
-    margin-block: 0;
-    margin-inline: 0;
+    margin: 0 0 var(--space-6);
   }
 
   .about-card__photo img {
-    object-position: center center;
+    object-position: center 8%;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(0 0 0 / 22%) 6%,
+      rgb(0 0 0 / 52%) 11%,
+      rgb(0 0 0 / 80%) 16%,
+      rgb(0 0 0 / 96%) 19%,
+      #000 22%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(0 0 0 / 22%) 6%,
+      rgb(0 0 0 / 52%) 11%,
+      rgb(0 0 0 / 80%) 16%,
+      rgb(0 0 0 / 96%) 19%,
+      #000 22%,
+      #000 100%
+    );
   }
 
   .about-card__hobbies-text {
