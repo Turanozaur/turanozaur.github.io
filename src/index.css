@@ -1149,56 +1149,71 @@ button {
     --section-gap: 2.5rem;
   }
 
+  .about-card {
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
   .about-card__inner {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
     gap: 0;
+    isolation: isolate;
   }
 
   .about-card__text {
     grid-column: 1;
     grid-row: 1;
-    position: relative;
-    z-index: 1;
-    margin-bottom: calc(-1 * var(--space-8));
-  }
-
-  .about-card__photo {
-    grid-column: 1;
-    grid-row: 2;
-    aspect-ratio: 3 / 4;
-    width: 100%;
-    max-width: 100%;
-    margin: 0 0 var(--space-6);
-  }
-
-  .about-card__photo img {
-    object-position: center 8%;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(0 0 0 / 22%) 6%,
-      rgb(0 0 0 / 52%) 11%,
-      rgb(0 0 0 / 80%) 16%,
-      rgb(0 0 0 / 96%) 19%,
-      #000 22%,
-      #000 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(0 0 0 / 22%) 6%,
-      rgb(0 0 0 / 52%) 11%,
-      rgb(0 0 0 / 80%) 16%,
-      rgb(0 0 0 / 96%) 19%,
-      #000 22%,
-      #000 100%
-    );
+    margin-bottom: var(--space-4);
   }
 
   .about-card__hobbies-text {
     grid-column: 1;
+    grid-row: 2;
+    position: relative;
+    z-index: 1;
+    margin-bottom: calc(-1 * var(--space-8));
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .about-card__photo {
+    grid-column: 1;
     grid-row: 3;
+    aspect-ratio: 3 / 4;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    contain: paint;
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-image: linear-gradient(
+        to bottom,
+        var(--color-surface) 0%,
+        color-mix(in srgb, var(--color-surface) 78%, transparent) 5%,
+        color-mix(in srgb, var(--color-surface) 48%, transparent) 10%,
+        color-mix(in srgb, var(--color-surface) 20%, transparent) 15%,
+        color-mix(in srgb, var(--color-surface) 4%, transparent) 18%,
+        transparent 21%
+      ),
+      url('/images/ivan-turanin.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%, cover;
+    background-position: center, center 8%;
+  }
+
+  .about-card__photo img {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .header__inner {
